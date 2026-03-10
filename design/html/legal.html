@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal — Moremi Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --surface: #0f0f0f;
+    --surface-2: #161616;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.1);
+    --border-active: rgba(232,131,74,0.35);
+    --amber: #E8834A;
+    --amber-light: #f0a070;
+    --amber-dim: rgba(232,131,74,0.1);
+    --text-primary: #ede8e0;
+    --text-secondary: rgba(237,232,224,0.45);
+    --text-muted: rgba(237,232,224,0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--black); color: var(--text-primary); font-family: 'Jost', sans-serif; font-weight: 300; min-height: 100vh; }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 100;
+  }
+
+  .topbar-brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark { width: 28px; height: 28px; border: 1px solid var(--border-active); border-radius: 4px; background: var(--amber-dim); display: flex; align-items: center; justify-content: center; }
+  .brand-mark svg { width: 14px; height: 14px; color: var(--amber); }
+  .brand-wordmark { font-family: 'Clash Display', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-primary); line-height: 1; }
+  .brand-sub { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); }
+
+  .back-btn { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .back-btn:hover { color: var(--text-secondary); }
+
+  /* ─── LAYOUT ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+    padding-top: 58px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    padding: 40px 0;
+    position: sticky;
+    top: 58px;
+    height: calc(100vh - 58px);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-label {
+    font-size: 8.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 24px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-tab {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 24px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.18s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+  .sidebar-tab.active { color: var(--text-primary); border-left-color: var(--amber); background: rgba(232,131,74,0.05); }
+
+  .sidebar-tab .tab-icon { width: 15px; height: 15px; opacity: 0.4; flex-shrink: 0; }
+  .sidebar-tab.active .tab-icon { opacity: 1; color: var(--amber); }
+
+  .sidebar-updated {
+    margin-top: auto;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ─── MAIN ─── */
+  .main { padding: 48px 52px 80px; }
+
+  /* Sections — show/hide */
+  .legal-section { display: none; }
+  .legal-section.active { display: block; animation: fadeUp 0.35s ease forwards; }
+
+  /* Section header */
+  .section-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--amber); opacity: 0.5; }
+
+  .section-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+    margin-bottom: 8px;
+  }
+
+  .section-intro {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: 540px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Content blocks */
+  .legal-block {
+    margin-bottom: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legal-block:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .block-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+  }
+
+  .block-body {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.85;
+  }
+
+  .block-body p { margin-bottom: 14px; }
+  .block-body p:last-child { margin-bottom: 0; }
+  .block-body strong { color: var(--text-primary); font-weight: 500; }
+
+  /* Data table */
+  .data-table {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .data-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-row:last-child { border-bottom: none; }
+  .data-row.header { background: rgba(255,255,255,0.03); }
+
+  .data-cell {
+    padding: 12px 16px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    border-right: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  .data-cell:last-child { border-right: none; }
+  .data-row.header .data-cell { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); }
+
+  .data-cell.yes { color: var(--amber); }
+  .data-cell.no { color: var(--text-muted); }
+
+  /* Callout box */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-family: 'Lora', serif;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .callout strong { color: var(--amber); font-weight: 500; }
+
+  /* Data request form */
+  .data-request {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 24px;
+  }
+
+  .data-request-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .data-request-desc {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .request-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .request-option {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .request-option:hover { border-color: var(--border-mid); }
+  .request-option.selected { border-color: var(--border-active); background: var(--amber-dim); }
+
+  .request-option-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .request-option-desc {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .request-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--amber);
+    color: var(--black);
+    font-family: 'Jost', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 11px 22px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .request-btn:hover { background: var(--amber-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,131,74,0.25); }
+
+  /* LinkedIn data breakdown */
+  .linkedin-data {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 16px 0;
+  }
+
+  .linkedin-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .linkedin-item.collected { color: var(--text-secondary); }
+  .linkedin-item.not-collected { color: var(--text-muted); opacity: 0.5; }
+
+  .li-status {
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .linkedin-item.collected .li-status { color: var(--amber); background: var(--amber-dim); border: 1px solid rgba(232,131,74,0.2); }
+  .linkedin-item.not-collected .li-status { color: var(--text-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 28px 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-wordmark {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .footer-divider { width: 1px; height: 14px; background: var(--border); }
+
+  .footer-client {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-link {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .footer-link:hover { color: var(--text-secondary); }
+  .footer-link.active-legal { color: var(--amber); }
+
+  .footer-copy {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <div class="brand-wordmark">Moremi</div>
+      <div class="brand-sub">Learning</div>
+    </div>
+  </div>
+  <a href="dashboard.html" class="back-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Dashboard
+  </a>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Legal</div>
+
+    <div class="sidebar-tab active" onclick="showSection('privacy', this)">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Privacy Policy
+    </div>
+    <div class="sidebar-tab" onclick="showSection('terms', this)">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Terms of Use
+    </div>
+    <div class="sidebar-tab" onclick="showSection('yourdata', this)">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      Your Data
+    </div>
+
+    <div class="sidebar-updated">
+      Last updated<br>
+      March 2026<br><br>
+      Questions? Contact<br>
+      hello@moremidigital.com
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ─── PRIVACY POLICY ─── -->
+    <div class="legal-section active" id="privacy">
+      <div class="section-eyebrow">Legal</div>
+      <div class="section-title">Privacy Policy</div>
+      <div class="section-intro">This policy explains what information we collect when you use the Moremi Learning platform, why we collect it, and how it is used. We've written this in plain English because you deserve to understand it.</div>
+
+      <div class="legal-block">
+        <div class="block-title">Who we are</div>
+        <div class="block-body">
+          <p>This platform is operated by <strong>Moremi Digital Group</strong>, a UK-based growth strategy consultancy. Your access to the platform has been arranged by <strong>All Things Media</strong>, your employer. References to "we" or "the platform" in this policy refer to Moremi Digital Group.</p>
+          <p>For data protection purposes, Moremi Digital Group acts as the data processor. All Things Media acts as the data controller — meaning they are responsible for determining why your data is held and for how long.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">What we collect</div>
+        <div class="block-body">
+          <p>We collect only what is necessary to provide you with a functional learning experience.</p>
+          <div class="data-table">
+            <div class="data-row header">
+              <div class="data-cell">Data</div>
+              <div class="data-cell">Source</div>
+              <div class="data-cell">Why</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Name, job title, profile photo</div>
+              <div class="data-cell">LinkedIn or manual sign-up</div>
+              <div class="data-cell">To personalise your profile</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Email address</div>
+              <div class="data-cell">LinkedIn, Google, or manual</div>
+              <div class="data-cell">Account access and notifications</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Course progress and completions</div>
+              <div class="data-cell">Your activity on the platform</div>
+              <div class="data-cell">To track learning and unlock modules</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Login timestamps and frequency</div>
+              <div class="data-cell">Automatic</div>
+              <div class="data-cell">Platform administration and streak tracking</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Feedback and support messages</div>
+              <div class="data-cell">Submitted by you</div>
+              <div class="data-cell">To improve the platform</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">What we do not collect</div>
+        <div class="block-body">
+          <p>We do not collect payment information. We do not access your LinkedIn connections, messages, or any data beyond your public profile fields. We do not use tracking cookies for advertising purposes. We do not sell or share your data with any third party for commercial purposes.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Who can see your data</div>
+        <div class="block-body">
+          <p><strong>Moremi Digital Group</strong> can see all platform usage data in order to maintain and improve the service.</p>
+          <p><strong>Your designated All Things Media administrator</strong> can see your name, role, course progress, login frequency, and streak. They cannot see your feedback submissions.</p>
+          <p><strong>Your colleagues</strong> can see your first name and streak on the team leaderboard only.</p>
+          <p><strong>Clerk</strong> (our authentication provider) processes your login credentials. Their privacy policy is available at clerk.com/privacy.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">How long we keep your data</div>
+        <div class="block-body">
+          <p>Your data is retained for as long as your account is active. If All Things Media ends their subscription or your account is removed, your personal data will be deleted within 30 days unless you have separately requested a data export.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Your rights under GDPR</div>
+        <div class="block-body">
+          <p>As a UK resident you have the right to access, correct, or request deletion of your personal data at any time. You can exercise these rights from the Your Data section of this page, or by emailing <strong>hello@moremidigital.com</strong>. We will respond within 30 days.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TERMS OF USE ─── -->
+    <div class="legal-section" id="terms">
+      <div class="section-eyebrow">Legal</div>
+      <div class="section-title">Terms of Use</div>
+      <div class="section-intro">By accessing this platform you agree to these terms. They exist to protect both you and the integrity of the platform — not to create barriers.</div>
+
+      <div class="legal-block">
+        <div class="block-title">Access and eligibility</div>
+        <div class="block-body">
+          <p>Access to this platform is granted by <strong>All Things Media</strong> to their employees and nominated team members. Your access is personal to you and may not be shared, transferred, or passed to another person.</p>
+          <p>All Things Media and Moremi Digital Group reserve the right to suspend or remove access at any time, with or without notice, if these terms are breached.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Intellectual property</div>
+        <div class="block-body">
+          <p>All course content, playbooks, audio materials, and platform design are the intellectual property of <strong>Moremi Digital Group</strong>. You may use the content for personal professional development within your role at All Things Media.</p>
+          <p>You may not reproduce, distribute, resell, or share platform content outside of All Things Media without express written permission from Moremi Digital Group.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Beta programme</div>
+        <div class="block-body">
+          <p>This platform is currently in beta. Access during the beta period is provided free of charge to All Things Media until <strong>31 October 2026</strong>. During this period, features may change, be added, or temporarily be unavailable. We will communicate significant changes in advance where possible.</p>
+          <div class="callout">
+            <strong>No action is required</strong> from you during the beta period. If All Things Media chooses to continue after October 2026, access will transition to a subscription arrangement. All your progress and data will carry over.
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Acceptable use</div>
+        <div class="block-body">
+          <p>You agree to use the platform only for its intended purpose — professional learning and development. You agree not to attempt to access other users' accounts, reverse engineer the platform, or use automated tools to access content.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Limitation of liability</div>
+        <div class="block-body">
+          <p>The platform is provided in good faith as an educational resource. Moremi Digital Group makes no guarantees regarding the completeness or ongoing accuracy of content, particularly in fast-moving areas such as digital marketing and platform policy. Content should be used as a foundation for understanding, not as professional or legal advice.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Governing law</div>
+        <div class="block-body">
+          <p>These terms are governed by the laws of England and Wales.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── YOUR DATA ─── -->
+    <div class="legal-section" id="yourdata">
+      <div class="section-eyebrow">Legal</div>
+      <div class="section-title">Your Data</div>
+      <div class="section-intro">A plain-English explanation of exactly what information exists about you on this platform, who can see it, and what you can do about it.</div>
+
+      <div class="legal-block">
+        <div class="block-title">What's in your account</div>
+        <div class="block-body">
+          <p>Your account contains your name, email address, job title, profile photo, course progress, login history, streak data, and any feedback you have submitted. That's it.</p>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">If you signed in with LinkedIn</div>
+        <div class="block-body">
+          <p>When you sign in using LinkedIn, we request access to a limited set of your public profile data. Here is exactly what is and is not collected:</p>
+          <div class="linkedin-data">
+            <div class="linkedin-item collected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Name and profile photo
+              <div class="li-status">Collected</div>
+            </div>
+            <div class="linkedin-item collected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Job title and current company
+              <div class="li-status">Collected</div>
+            </div>
+            <div class="linkedin-item collected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email address
+              <div class="li-status">Collected</div>
+            </div>
+            <div class="linkedin-item not-collected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Your connections and network
+              <div class="li-status">Not collected</div>
+            </div>
+            <div class="linkedin-item not-collected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Messages or activity
+              <div class="li-status">Not collected</div>
+            </div>
+            <div class="linkedin-item not-collected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.92 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Contact information beyond email
+              <div class="li-status">Not collected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Who sees what</div>
+        <div class="block-body">
+          <div class="data-table">
+            <div class="data-row header">
+              <div class="data-cell">Data</div>
+              <div class="data-cell">ATM Admin</div>
+              <div class="data-cell">Your Colleagues</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Your name</div>
+              <div class="data-cell yes">Yes</div>
+              <div class="data-cell yes">First name on leaderboard</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Course progress</div>
+              <div class="data-cell yes">Yes</div>
+              <div class="data-cell no">No</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Login frequency</div>
+              <div class="data-cell yes">Yes</div>
+              <div class="data-cell no">No</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Streak</div>
+              <div class="data-cell yes">Yes</div>
+              <div class="data-cell yes">Leaderboard only</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Feedback submitted</div>
+              <div class="data-cell no">No</div>
+              <div class="data-cell no">No</div>
+            </div>
+            <div class="data-row">
+              <div class="data-cell">Email address</div>
+              <div class="data-cell no">No</div>
+              <div class="data-cell no">No</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-block">
+        <div class="block-title">Request your data or close your account</div>
+        <div class="block-body">
+          <p>You can request a full export of your data or ask us to delete your account at any time. Select an option below and we'll respond within 30 days.</p>
+        </div>
+
+        <div class="data-request">
+          <div class="data-request-title">Make a Data Request</div>
+          <div class="data-request-desc">Requests are processed by Moremi Digital Group within 30 days. Your request is private — it is not visible to All Things Media.</div>
+          <div class="request-options">
+            <div class="request-option selected" onclick="selectRequest(this)">
+              <div class="request-option-title">Export My Data</div>
+              <div class="request-option-desc">Receive a copy of all data held about you in a readable format</div>
+            </div>
+            <div class="request-option" onclick="selectRequest(this)">
+              <div class="request-option-title">Delete My Account</div>
+              <div class="request-option-desc">Permanently remove your account and all associated data</div>
+            </div>
+          </div>
+          <button class="request-btn" onclick="submitRequest()">Submit Request →</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="footer-wordmark">Moremi Learning</div>
+    <div class="footer-divider"></div>
+    <div class="footer-client">All Things Media</div>
+  </div>
+  <div class="footer-links">
+    <a href="legal.html" class="footer-link active-legal" onclick="showSection('privacy')">Privacy Policy</a>
+    <a href="legal.html" class="footer-link" onclick="showSection('terms')">Terms of Use</a>
+    <a href="legal.html" class="footer-link" onclick="showSection('yourdata')">Your Data</a>
+  </div>
+  <div class="footer-copy">© 2026 Moremi Digital Group</div>
+</footer>
+
+<script>
+  function showSection(id, tabEl) {
+    document.querySelectorAll('.legal-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (tabEl) tabEl.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectRequest(el) {
+    document.querySelectorAll('.request-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function submitRequest() {
+    alert('Your request has been submitted. We will respond within 30 days.');
+  }
+</script>
+
+</body>
+</html>

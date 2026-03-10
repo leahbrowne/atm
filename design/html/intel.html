@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Intelligence — Moremi Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --surface: #0f0f0f;
+    --surface-2: #161616;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.1);
+    --border-active: rgba(232,131,74,0.35);
+    --amber: #E8834A;
+    --amber-light: #f0a070;
+    --amber-dim: rgba(232,131,74,0.1);
+    --text-primary: #ede8e0;
+    --text-secondary: rgba(237,232,224,0.45);
+    --text-muted: rgba(237,232,224,0.22);
+    --blue: rgba(99,179,237,0.9);
+    --blue-dim: rgba(99,179,237,0.08);
+    --green: rgba(154,205,80,0.9);
+    --green-dim: rgba(154,205,80,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--black); color: var(--text-primary); font-family: 'Jost', sans-serif; font-weight: 300; min-height: 100vh; }
+
+  .topbar { position: fixed; top: 0; left: 0; right: 0; height: 58px; background: rgba(8,8,8,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; z-index: 100; }
+  .topbar-brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark { width: 28px; height: 28px; border: 1px solid var(--border-active); border-radius: 4px; background: var(--amber-dim); display: flex; align-items: center; justify-content: center; }
+  .brand-mark svg { width: 14px; height: 14px; color: var(--amber); }
+  .brand-wordmark { font-family: 'Clash Display', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-primary); line-height: 1; }
+  .brand-sub { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); }
+  .topbar-nav { display: flex; align-items: center; gap: 28px; }
+  .topbar-nav a { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .topbar-nav a.active { color: var(--amber); }
+  .avatar-btn { display: flex; align-items: center; gap: 9px; padding: 4px 10px 4px 4px; border-radius: 20px; border: 1px solid var(--border-mid); cursor: pointer; }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--amber-dim); border: 1px solid var(--border-active); display: flex; align-items: center; justify-content: center; font-family: 'Clash Display', sans-serif; font-size: 10px; font-weight: 600; color: var(--amber); }
+  .avatar-name { font-size: 11px; color: var(--text-secondary); }
+
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; padding-top: 58px; }
+
+  /* Sidebar */
+  .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 28px 0; position: sticky; top: 58px; height: calc(100vh - 58px); display: flex; flex-direction: column; overflow-y: auto; }
+  .sidebar-label { font-size: 8.5px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: var(--text-muted); padding: 0 20px; margin-bottom: 6px; margin-top: 8px; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 12px; letter-spacing: 0.06em; color: var(--text-secondary); cursor: pointer; transition: all 0.18s; border-left: 2px solid transparent; text-decoration: none; }
+  .sidebar-item:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+  .sidebar-item.active { color: var(--text-primary); border-left-color: rgba(99,179,237,0.6); background: rgba(99,179,237,0.04); }
+  .sidebar-item .icon { width: 15px; height: 15px; opacity: 0.4; flex-shrink: 0; }
+  .sidebar-item.active .icon { opacity: 0.9; }
+  .soon-tag { margin-left: auto; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 2px 7px; border-radius: 20px; }
+  .sidebar-divider { height: 1px; background: var(--border); margin: 16px 20px; }
+
+  /* Vertical filter pills in sidebar */
+  .vertical-filters { padding: 0 16px; display: flex; flex-direction: column; gap: 4px; }
+  .vertical-pill { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 6px; cursor: pointer; transition: all 0.18s; }
+  .vertical-pill:hover { background: rgba(255,255,255,0.03); }
+  .vertical-pill.active { background: rgba(255,255,255,0.05); }
+  .vertical-color { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .vertical-name { font-size: 11.5px; letter-spacing: 0.04em; color: var(--text-secondary); }
+  .vertical-pill.active .vertical-name { color: var(--text-primary); }
+  .vertical-count { margin-left: auto; font-size: 9.5px; color: var(--text-muted); background: rgba(255,255,255,0.05); border-radius: 10px; padding: 1px 7px; }
+
+  .sidebar-bottom { margin-top: auto; padding: 20px; }
+  .update-info { font-size: 9.5px; letter-spacing: 0.08em; color: var(--text-muted); line-height: 1.6; display: flex; align-items: flex-start; gap: 7px; }
+  .live-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 5px rgba(74,222,128,0.5); flex-shrink: 0; margin-top: 4px; animation: livepulse 2.5s infinite; }
+  @keyframes livepulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+  /* Main content */
+  .main { padding: 36px 44px 80px; }
+
+  .page-header { margin-bottom: 28px; animation: fadeUp 0.4s ease forwards; }
+  .page-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .page-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--blue); opacity: 0.5; }
+  .page-title { font-family: 'Clash Display', sans-serif; font-size: 26px; font-weight: 500; color: var(--text-primary); letter-spacing: 0.01em; margin-bottom: 6px; }
+  .page-desc { font-family: 'Lora', serif; font-size: 13px; color: var(--text-secondary); line-height: 1.7; max-width: 500px; }
+
+  /* Filter bar */
+  .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; animation: fadeUp 0.4s 0.07s ease both; }
+  .filter-tab { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); padding: 7px 16px; border-radius: 6px; cursor: pointer; transition: all 0.18s; border: 1px solid transparent; }
+  .filter-tab:hover { color: var(--text-secondary); border-color: var(--border); }
+  .filter-tab.active { color: var(--text-primary); background: rgba(255,255,255,0.06); border-color: var(--border-mid); }
+  .filter-separator { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+  .filter-tab.competitor.active { color: var(--amber); background: var(--amber-dim); border-color: rgba(232,131,74,0.2); }
+
+  /* Article grid */
+  .article-grid { display: flex; flex-direction: column; gap: 2px; animation: fadeUp 0.4s 0.12s ease both; }
+
+  .article-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    display: grid;
+    grid-template-columns: 4px 1fr auto;
+    gap: 0 22px;
+    padding: 22px 22px 22px 0;
+    margin-left: 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .article-card:first-child { border-radius: 8px 8px 0 0; }
+  .article-card:last-child { border-radius: 0 0 8px 8px; border-bottom: 1px solid var(--border); }
+  .article-card + .article-card { border-top: none; }
+
+  .article-card:hover {
+    background: var(--surface-2);
+    margin-left: 0;
+    padding-left: 22px;
+    z-index: 1;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-color: var(--border-mid);
+  }
+
+  .article-accent { width: 4px; align-self: stretch; border-radius: 2px; min-height: 50px; }
+  .article-card.competitor .article-accent { background: var(--amber); }
+  .article-card.data-centre .article-accent { background: rgba(167,139,250,0.7); }
+  .article-card.smart-home .article-accent { background: rgba(99,179,237,0.7); }
+  .article-card.cinema-av .article-accent { background: rgba(154,205,80,0.7); }
+
+  .article-content {}
+  .article-source-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .article-source { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+
+  .article-tag { font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; }
+  .article-tag.competitor { color: var(--amber); background: var(--amber-dim); border: 1px solid rgba(232,131,74,0.2); }
+  .article-tag.data-centre { color: rgba(167,139,250,0.9); background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); }
+  .article-tag.smart-home { color: var(--blue); background: var(--blue-dim); border: 1px solid rgba(99,179,237,0.2); }
+  .article-tag.cinema-av { color: var(--green); background: var(--green-dim); border: 1px solid rgba(154,205,80,0.2); }
+
+  .article-headline { font-size: 14px; font-weight: 400; letter-spacing: 0.02em; color: var(--text-primary); line-height: 1.45; margin-bottom: 7px; }
+  .article-card:hover .article-headline { color: #fff; }
+  .article-summary { font-family: 'Lora', serif; font-size: 12.5px; color: var(--text-secondary); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .article-meta { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; min-width: 90px; padding-top: 2px; }
+  .article-time { font-size: 9.5px; letter-spacing: 0.1em; color: var(--text-muted); white-space: nowrap; }
+  .article-arrow { font-size: 18px; color: var(--text-muted); transition: all 0.18s; }
+  .article-card:hover .article-arrow { color: var(--amber); transform: translateX(3px); }
+
+  /* Featured article */
+  .featured-card {
+    background: var(--surface);
+    border: 1px solid var(--border-active);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.4s 0.1s ease both;
+  }
+
+  .featured-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--amber), transparent); }
+  .featured-card:hover { border-color: rgba(232,131,74,0.5); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .featured-eyebrow { font-size: 8.5px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .featured-eyebrow::before { content: ''; width: 12px; height: 1px; background: var(--amber); }
+  .featured-headline { font-family: 'Clash Display', sans-serif; font-size: 18px; font-weight: 500; color: var(--text-primary); line-height: 1.3; margin-bottom: 10px; letter-spacing: 0.01em; }
+  .featured-summary { font-family: 'Lora', serif; font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 16px; }
+  .featured-footer { display: flex; align-items: center; justify-content: space-between; }
+  .featured-source { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+  .featured-read { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+    <div><div class="brand-wordmark">Moremi</div><div class="brand-sub">Learning</div></div>
+  </div>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#">Courses</a>
+    <a href="#" class="active">Intel</a>
+    <a href="profile.html">Profile</a>
+  </nav>
+  <div class="avatar-btn">
+    <div class="avatar">JM</div>
+    <div class="avatar-name">James M.</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-label">Courses</div>
+    <a href="dashboard.html" class="sidebar-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Google Ads
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Website
+      <span class="soon-tag">Soon</span>
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+      <span class="soon-tag">Soon</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-label">Filter by Vertical</div>
+    <div class="vertical-filters">
+      <div class="vertical-pill active">
+        <div class="vertical-color" style="background:rgba(255,255,255,0.3)"></div>
+        <div class="vertical-name">All Stories</div>
+        <div class="vertical-count">12</div>
+      </div>
+      <div class="vertical-pill">
+        <div class="vertical-color" style="background:rgba(167,139,250,0.8)"></div>
+        <div class="vertical-name">Data Centres</div>
+        <div class="vertical-count">4</div>
+      </div>
+      <div class="vertical-pill">
+        <div class="vertical-color" style="background:rgba(99,179,237,0.8)"></div>
+        <div class="vertical-name">Smart Home</div>
+        <div class="vertical-count">3</div>
+      </div>
+      <div class="vertical-pill">
+        <div class="vertical-color" style="background:rgba(154,205,80,0.8)"></div>
+        <div class="vertical-name">Cinema & AV</div>
+        <div class="vertical-count">3</div>
+      </div>
+      <div class="vertical-pill">
+        <div class="vertical-color" style="background:rgba(232,131,74,0.8)"></div>
+        <div class="vertical-name">Competitors</div>
+        <div class="vertical-count">2</div>
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="update-info">
+        <div class="live-dot"></div>
+        Feed updates hourly. Sources: Data Centre Dynamics, CE Pro Europe, Cinema Technology, AVTechnology Europe, Smart Home World.
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Live Feed</div>
+      <div class="page-title">Market Intelligence</div>
+      <div class="page-desc">What's happening across your industries — data centres, smart home, cinema and AV — plus competitor moves, updated hourly.</div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-tab active">All</div>
+      <div class="filter-tab">Data Centres</div>
+      <div class="filter-tab">Smart Home</div>
+      <div class="filter-tab">Cinema & AV</div>
+      <div class="filter-separator"></div>
+      <div class="filter-tab competitor">Competitors</div>
+    </div>
+
+    <!-- Featured -->
+    <div class="featured-card">
+      <div class="featured-eyebrow">Top Story · Data Centres</div>
+      <div class="featured-headline">UK hyperscale data centre investment reaches record £4.2bn as AI infrastructure demand accelerates</div>
+      <div class="featured-summary">Microsoft and Google commitments are driving the majority of spend, with secondary markets outside London seeing significant greenfield development for the first time. The surge is creating new demand for specialist contractors, power infrastructure, and cooling technology — opening substantial exhibitor opportunities for events in this vertical.</div>
+      <div class="featured-footer">
+        <div class="featured-source">Data Centre Dynamics · 1h ago</div>
+        <div class="featured-read">Read full story →</div>
+      </div>
+    </div>
+
+    <!-- Articles -->
+    <div class="article-grid">
+
+      <div class="article-card competitor">
+        <div class="article-accent"></div>
+        <div class="article-content">
+          <div class="article-source-row">
+            <span class="article-source">CE Pro Europe</span>
+            <span class="article-tag competitor">Competitor</span>
+          </div>
+          <div class="article-headline">CEDIA Expo Europe confirms Manchester venue for 2026 — largest smart home event outside the US</div>
+          <div class="article-summary">The move to Manchester signals growing confidence in the UK residential tech market and puts pressure on regional trade shows to differentiate their exhibitor proposition clearly.</div>
+        </div>
+        <div class="article-meta">
+          <div class="article-time">3h ago</div>
+          <div class="article-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="article-card cinema-av">
+        <div class="article-accent"></div>
+        <div class="article-content">
+          <div class="article-source-row">
+            <span class="article-source">Cinema Technology</span>
+            <span class="article-tag cinema-av">Cinema & AV</span>
+          </div>
+          <div class="article-headline">Dolby Atmos installations up 34% in European cinemas as operators invest in premium formats to counter streaming</div>
+          <div class="article-summary">Independent exhibitors are leading adoption, with premium large format screens now accounting for a disproportionate share of total box office revenue across the UK.</div>
+        </div>
+        <div class="article-meta">
+          <div class="article-time">5h ago</div>
+          <div class="article-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="article-card competitor">
+        <div class="article-accent"></div>
+        <div class="article-content">
+          <div class="article-source-row">
+            <span class="article-source">AVTechnology Europe</span>
+            <span class="article-tag competitor">Competitor</span>
+          </div>
+          <div class="article-headline">ISE 2026 breaks exhibitor records with 1,400 confirmed brands across audio, video and control</div>
+          <div class="article-summary">The Barcelona show continues to consolidate its position as the dominant European AV trade event, raising the stakes for regional shows to define their niche value clearly.</div>
+        </div>
+        <div class="article-meta">
+          <div class="article-time">7h ago</div>
+          <div class="article-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="article-card smart-home">
+        <div class="article-accent"></div>
+        <div class="article-content">
+          <div class="article-source-row">
+            <span class="article-source">Smart Home World</span>
+            <span class="article-tag smart-home">Smart Home</span>
+          </div>
+          <div class="article-headline">Matter protocol adoption hits tipping point as all major UK retailers now stock certified devices</div>
+          <div class="article-summary">The interoperability standard is reshaping the smart home installer market, creating demand for professional integration training and certified installers across residential projects.</div>
+        </div>
+        <div class="article-meta">
+          <div class="article-time">Yesterday</div>
+          <div class="article-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="article-card data-centre">
+        <div class="article-accent"></div>
+        <div class="article-content">
+          <div class="article-source-row">
+            <span class="article-source">Data Centre Dynamics</span>
+            <span class="article-tag data-centre">Data Centres</span>
+          </div>
+          <div class="article-headline">Power constraints emerge as primary bottleneck for UK data centre expansion plans</div>
+          <div class="article-summary">Grid connection delays are pushing average development timelines beyond four years, accelerating interest in modular and edge computing solutions from operators unable to secure large-site power.</div>
+        </div>
+        <div class="article-meta">
+          <div class="article-time">Yesterday</div>
+          <div class="article-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="article-card smart-home">
+        <div class="article-accent"></div>
+        <div class="article-content">
+          <div class="article-source-row">
+            <span class="article-source">CE Pro Europe</span>
+            <span class="article-tag smart-home">Smart Home</span>
+          </div>
+          <div class="article-headline">Installer confidence in the smart home sector reaches three-year high as project pipelines grow</div>
+          <div class="article-summary">A survey of 600 CE Pro installers finds 72% report more projects in the pipeline than this time last year, with average project values also increasing significantly.</div>
+        </div>
+        <div class="article-meta">
+          <div class="article-time">2 days ago</div>
+          <div class="article-arrow">›</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER --><footer style="background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.06);padding:24px 44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative;z-index:1;"><div style="display:flex;align-items:center;gap:12px;"><span style="font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(237,232,224,0.35);">Moremi Learning</span><span style="width:1px;height:14px;background:rgba(255,255,255,0.06);display:inline-block;"></span><span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.2);">All Things Media</span></div><div style="display:flex;align-items:center;gap:22px;"><a href="legal.html" style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.22);text-decoration:none;">Privacy Policy</a><a href="legal.html" style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.22);text-decoration:none;">Terms of Use</a><a href="legal.html" style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.22);text-decoration:none;">Your Data</a></div><div style="font-size:10px;letter-spacing:0.08em;color:rgba(237,232,224,0.18);">© 2026 Moremi Digital Group</div></footer>
+</body>
+</html>

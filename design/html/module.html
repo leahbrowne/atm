@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 02 — Where do ads appear? · Moremi Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --surface: #0f0f0f;
+    --surface-2: #161616;
+    --surface-3: #1c1c1c;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.1);
+    --border-active: rgba(232,131,74,0.35);
+    --amber: #E8834A;
+    --amber-light: #f0a070;
+    --amber-dim: rgba(232,131,74,0.1);
+    --amber-glow: rgba(232,131,74,0.05);
+    --text-primary: #ede8e0;
+    --text-secondary: rgba(237,232,224,0.45);
+    --text-muted: rgba(237,232,224,0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--text-primary);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 100;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-btn:hover { color: var(--text-secondary); }
+
+  .topbar-divider {
+    width: 1px; height: 18px;
+    background: var(--border);
+  }
+
+  .topbar-course {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+  }
+
+  .topbar-course span { color: var(--amber); }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .module-progress-pills {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .progress-pill {
+    width: 24px; height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+
+  .progress-pill.done { background: var(--amber); }
+  .progress-pill.active { background: rgba(232,131,74,0.4); }
+
+  .avatar-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 20px;
+    border: 1px solid var(--border-mid);
+    cursor: pointer;
+  }
+
+  .avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--amber-dim);
+    border: 1px solid var(--border-active);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Clash Display', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--amber);
+  }
+
+  .avatar-name {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* ─── LAYOUT ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    min-height: 100vh;
+    padding-top: 58px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .content-area {
+    padding: 48px 52px 80px;
+    border-right: 1px solid var(--border);
+  }
+
+  .module-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  .module-number {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: var(--amber-dim);
+    border: 1px solid rgba(232,131,74,0.2);
+    border-radius: 20px;
+    padding: 3px 12px;
+  }
+
+  .module-course {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .module-time {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ─── AUDIO PLAYER ─── */
+  .audio-player {
+    background: var(--surface);
+    border: 1px solid var(--border-active);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.4s 0.05s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .audio-player::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--amber), var(--amber-light), transparent);
+  }
+
+  .audio-player::after {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,131,74,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .audio-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .audio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .audio-label-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 5px var(--amber);
+  }
+
+  .audio-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .audio-duration {
+    margin-left: auto;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .play-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .play-btn:hover {
+    background: var(--amber-light);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(232,131,74,0.3);
+  }
+
+  .play-btn svg { color: var(--black); margin-left: 2px; }
+
+  .audio-progress-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .audio-progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .audio-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--amber), var(--amber-light));
+    border-radius: 2px;
+    transition: width 0.1s;
+    position: relative;
+  }
+
+  .audio-progress-fill::after {
+    content: '';
+    position: absolute;
+    right: -4px; top: -3px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 5px rgba(232,131,74,0.6);
+  }
+
+  .audio-timestamps {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .audio-extras {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 8px;
+  }
+
+  .audio-speed {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 9px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .audio-speed:hover {
+    border-color: var(--border-mid);
+    color: var(--text-primary);
+  }
+
+  /* ─── MODULE HEADING ─── */
+  .module-heading {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    animation: fadeUp 0.4s 0.1s ease both;
+  }
+
+  .module-intro {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 580px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.4s 0.12s ease both;
+  }
+
+  /* ─── ARTICLE BODY ─── */
+  .article {
+    max-width: 620px;
+    animation: fadeUp 0.4s 0.15s ease both;
+  }
+
+  .article h2 {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 36px 0 14px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+  }
+
+  .article h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+  .article p {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.85;
+    margin-bottom: 18px;
+  }
+
+  .article p strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .article .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 16px 20px;
+    margin: 24px 0;
+  }
+
+  .article .callout p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+
+  .article .callout p strong { color: var(--amber); }
+
+  /* Placement cards */
+  .placement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 24px 0;
+  }
+
+  .placement-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+
+  .placement-card:hover { border-color: var(--border-mid); }
+
+  .placement-icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    background: var(--amber-dim);
+    border: 1px solid rgba(232,131,74,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .placement-icon svg { width: 16px; height: 16px; color: var(--amber); }
+
+  .placement-name {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+  }
+
+  .placement-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── MODULE FOOTER ─── */
+  .module-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.4s 0.2s ease both;
+  }
+
+  .mark-complete-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--amber);
+    color: var(--black);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 13px 26px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mark-complete-btn:hover {
+    background: var(--amber-light);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(232,131,74,0.25);
+  }
+
+  .next-module {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+
+  .next-module:hover { color: var(--text-secondary); }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    padding: 36px 28px;
+    position: sticky;
+    top: 58px;
+    height: calc(100vh - 58px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .sidebar-section-title {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  /* Course progress */
+  .course-modules {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .course-module-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+
+  .course-module-item:hover { background: rgba(255,255,255,0.03); }
+  .course-module-item.active { background: var(--amber-glow); }
+
+  .module-status-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .module-status-icon.done {
+    background: var(--amber-dim);
+    border-color: rgba(232,131,74,0.3);
+  }
+
+  .module-status-icon.active {
+    border-color: var(--amber);
+    box-shadow: 0 0 6px rgba(232,131,74,0.3);
+  }
+
+  .module-status-icon svg { width: 10px; height: 10px; }
+  .module-status-icon.done svg { color: var(--amber); }
+  .module-status-icon.active svg { color: var(--amber); }
+  .module-status-icon svg.lock { color: var(--text-muted); }
+
+  .course-module-text {}
+  .course-module-name {
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .course-module-item.active .course-module-name { color: var(--text-primary); }
+
+  .course-module-time {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Key takeaways */
+  .takeaway-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .takeaway-item {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .takeaway-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--amber);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  /* Streak nudge */
+  .streak-nudge {
+    background: var(--amber-dim);
+    border: 1px solid var(--border-active);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+  }
+
+  .streak-nudge-icon { font-size: 22px; }
+
+  .streak-nudge-text {}
+  .streak-nudge-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .streak-nudge-sub {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="dashboard.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back
+    </a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-course">Google Ads · <span>Module 02</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="module-progress-pills">
+      <div class="progress-pill done"></div>
+      <div class="progress-pill active"></div>
+      <div class="progress-pill"></div>
+      <div class="progress-pill"></div>
+    </div>
+    <div class="avatar-btn">
+      <div class="avatar">JM</div>
+      <div class="avatar-name">James M.</div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- CONTENT -->
+  <div class="content-area">
+
+    <div class="module-meta">
+      <div class="module-number">Module 02</div>
+      <div class="module-course">Google Ads: What You Need to Know</div>
+      <div class="module-time">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        8 min read
+      </div>
+    </div>
+
+    <!-- AUDIO PLAYER -->
+    <div class="audio-player">
+      <div class="audio-header">
+        <div class="audio-label">
+          <div class="audio-label-dot"></div>
+          Listen to this module
+        </div>
+        <div class="audio-title">Where do Google Ads appear?</div>
+        <div class="audio-duration">8:24</div>
+      </div>
+      <div class="audio-controls">
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">
+          <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </button>
+        <div class="audio-progress-wrap">
+          <div class="audio-progress-bar" onclick="seekAudio(event)">
+            <div class="audio-progress-fill" id="audioProgress"></div>
+          </div>
+          <div class="audio-timestamps">
+            <span id="currentTime">0:00</span>
+            <span>8:24</span>
+          </div>
+        </div>
+        <div class="audio-extras">
+          <div class="audio-speed" onclick="cycleSpeed(this)">1×</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-heading">Where do Google Ads appear?</div>
+    <div class="module-intro">You've seen Google Ads hundreds of times without realising it. Once you know where to look, you'll start spotting them everywhere — and understanding why they're there.</div>
+
+    <div class="article">
+
+      <h2>The short answer</h2>
+      <p>Google Ads can appear in four main places: at the top of Google search results, on websites across the internet, on YouTube, and inside Gmail. Each placement works differently and serves a different purpose.</p>
+
+      <div class="callout">
+        <p><strong>The key thing to understand:</strong> Google Ads aren't just search results. They're a network that reaches people across the entire internet — not just when they're actively searching.</p>
+      </div>
+
+      <h2>The four places ads appear</h2>
+
+      <div class="placement-grid">
+        <div class="placement-card">
+          <div class="placement-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div class="placement-name">Google Search</div>
+          <div class="placement-desc">The results that appear at the top and bottom of a Google search page. Labelled "Sponsored." This is the most direct form — the person is actively searching for something.</div>
+        </div>
+        <div class="placement-card">
+          <div class="placement-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="placement-name">Display Network</div>
+          <div class="placement-desc">Banner ads that appear on millions of websites — news sites, blogs, industry publications. Google places them based on who's visiting that site and what they've searched for before.</div>
+        </div>
+        <div class="placement-card">
+          <div class="placement-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div class="placement-name">YouTube</div>
+          <div class="placement-desc">The ads that play before or during videos, or appear alongside search results on YouTube. Skippable and non-skippable formats. Good for brand awareness.</div>
+        </div>
+        <div class="placement-card">
+          <div class="placement-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="placement-name">Gmail</div>
+          <div class="placement-desc">Ads that appear at the top of the Gmail Promotions tab, styled to look like emails. Less commonly used but effective for reaching business email users.</div>
+        </div>
+      </div>
+
+      <h2>Why this matters for All Things Media</h2>
+      <p>When you're reviewing a campaign report or sitting in a briefing with an agency, you'll hear these placements referenced. <strong>Search ads</strong> capture people who are already looking for what you offer — event listings, trade shows, industry publications. <strong>Display ads</strong> build visibility with people who aren't actively searching but fit your audience profile.</p>
+      <p>The mix between search and display in a campaign budget tells you a lot about the strategy. Heavy on search means the focus is conversion — getting registrations. Heavy on display means the focus is awareness — getting your brand in front of new audiences who don't know you yet.</p>
+
+      <div class="callout">
+        <p><strong>A question worth asking your agency:</strong> "Which placements are our budget going toward, and why that mix for this campaign?"</p>
+      </div>
+
+    </div>
+
+    <div class="module-footer">
+      <button class="mark-complete-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Mark as complete
+      </button>
+      <a href="#" class="next-module">
+        Next: How are ads triggered?
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div>
+      <div class="sidebar-section-title">Course Modules</div>
+      <div class="course-modules">
+        <div class="course-module-item">
+          <div class="module-status-icon done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="course-module-text">
+            <div class="course-module-name">What is Google Ads?</div>
+            <div class="course-module-time">7 min</div>
+          </div>
+        </div>
+        <div class="course-module-item active">
+          <div class="module-status-icon active">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg>
+          </div>
+          <div class="course-module-text">
+            <div class="course-module-name">Where do ads appear?</div>
+            <div class="course-module-time">8 min</div>
+          </div>
+        </div>
+        <div class="course-module-item">
+          <div class="module-status-icon">
+            <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="course-module-text">
+            <div class="course-module-name">How are ads triggered?</div>
+            <div class="course-module-time">8 min</div>
+          </div>
+        </div>
+        <div class="course-module-item">
+          <div class="module-status-icon">
+            <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="course-module-text">
+            <div class="course-module-name">What do the different ad formats look like?</div>
+            <div class="course-module-time">7 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Key Takeaways</div>
+      <div class="takeaway-list">
+        <div class="takeaway-item">
+          <div class="takeaway-dot"></div>
+          Google Ads appear in four places — Search, Display, YouTube, and Gmail
+        </div>
+        <div class="takeaway-item">
+          <div class="takeaway-dot"></div>
+          Search ads capture people actively looking for something
+        </div>
+        <div class="takeaway-item">
+          <div class="takeaway-dot"></div>
+          Display ads build awareness across millions of websites
+        </div>
+        <div class="takeaway-item">
+          <div class="takeaway-dot"></div>
+          The budget mix between placements tells you the campaign's goal
+        </div>
+      </div>
+    </div>
+
+    <div class="streak-nudge">
+      <div class="streak-nudge-icon">🔥</div>
+      <div class="streak-nudge-text">
+        <div class="streak-nudge-title">3 day streak</div>
+        <div class="streak-nudge-sub">Complete this to keep it going</div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<script>
+  let playing = false;
+  let progress = 0;
+  let interval;
+  const speeds = ['1×', '1.25×', '1.5×', '2×'];
+  let speedIndex = 0;
+
+  function togglePlay() {
+    playing = !playing;
+    const icon = document.getElementById('playIcon');
+    if (playing) {
+      icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      interval = setInterval(advanceProgress, 100);
+    } else {
+      icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+      clearInterval(interval);
+    }
+  }
+
+  function advanceProgress() {
+    if (progress < 100) {
+      progress += 0.02;
+      document.getElementById('audioProgress').style.width = progress + '%';
+      const seconds = Math.floor((progress / 100) * 504);
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      document.getElementById('currentTime').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    } else {
+      clearInterval(interval);
+      playing = false;
+    }
+  }
+
+  function seekAudio(e) {
+    const bar = e.currentTarget;
+    const rect = bar.getBoundingClientRect();
+    progress = ((e.clientX - rect.left) / rect.width) * 100;
+    document.getElementById('audioProgress').style.width = progress + '%';
+  }
+
+  function cycleSpeed(el) {
+    speedIndex = (speedIndex + 1) % speeds.length;
+    el.textContent = speeds[speedIndex];
+  }
+</script>
+
+<!-- FOOTER --><footer style="background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.06);padding:24px 44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative;z-index:1;"><div style="display:flex;align-items:center;gap:12px;"><span style="font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(237,232,224,0.35);">Moremi Learning</span><span style="width:1px;height:14px;background:rgba(255,255,255,0.06);display:inline-block;"></span><span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.2);">All Things Media</span></div><div style="display:flex;align-items:center;gap:22px;"><a href="legal.html" style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.22);text-decoration:none;">Privacy Policy</a><a href="legal.html" style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.22);text-decoration:none;">Terms of Use</a><a href="legal.html" style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(237,232,224,0.22);text-decoration:none;">Your Data</a></div><div style="font-size:10px;letter-spacing:0.08em;color:rgba(237,232,224,0.18);">© 2026 Moremi Digital Group</div></footer>
+</body>
+</html>
