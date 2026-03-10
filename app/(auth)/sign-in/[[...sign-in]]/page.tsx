@@ -7,10 +7,10 @@ import { useSignIn, useUser } from '@clerk/nextjs'
 import styles from './page.module.css'
 
 const features = [
-  'Google Ads — what it is and how it works',
-  'LinkedIn — building your professional presence',
-  'Your website — cookies, UX, and what the data means',
-  'Market intelligence — your industry, updated daily',
+  'Channels — understand how digital marketing works and what to expect from it',
+  'Your Website — know what your site is doing and why it matters',
+  'Market Intelligence — stay informed on your industry, daily',
+  'Your Team — build the shared language that drives better decisions',
 ]
 
 export default function SignInPage() {
@@ -91,7 +91,7 @@ export default function SignInPage() {
         </div>
 
         <div className={styles.panelContent}>
-          <p className={styles.panelEyebrow}>FOR LEADERS AND TEAMS WHO WANT TO STOP GUESSING AND START GROWING.</p>
+          <p className={styles.panelEyebrow}>FOR LEADERS AND TEAMS</p>
           <h1 className={styles.panelHeadline}>Marketing knowledge that sticks.</h1>
           <p className={styles.panelDescription}>
             Help teams understand marketing and use that understanding to grow the business.
