@@ -24,11 +24,28 @@
   --blue-dim: rgba(99, 179, 237, 0.08);
 }
 
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
   background: #080808;
   color: #ede8e0;
   font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 @keyframes fadeUp {
@@ -41,4 +58,324 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.fade-up {
+  animation: fadeUp 0.5s ease both;
+}
+
+.fade-delay-0 {
+  animation-delay: 0s;
+}
+
+.fade-delay-1 {
+  animation-delay: 0.07s;
+}
+
+.fade-delay-2 {
+  animation-delay: 0.12s;
+}
+
+.fade-delay-3 {
+  animation-delay: 0.17s;
+}
+
+.fade-delay-4 {
+  animation-delay: 0.22s;
+}
+
+.fade-delay-5 {
+  animation-delay: 0.27s;
+}
+
+.fade-delay-6 {
+  animation-delay: 0.32s;
+}
+
+.platform-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.platform-content {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  padding-top: 58px;
+  min-height: calc(100vh - 58px);
+}
+
+.platform-main {
+  min-width: 0;
+  padding: 36px 44px 60px;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  background: rgba(8, 8, 8, 0.85);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: 100;
+}
+
+.topbar-brand,
+.topbar-module {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-active);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--amber-dim);
+}
+
+.brand-wordmark,
+.client-wordmark {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.brand-sub,
+.client-sub {
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.brand-sub {
+  color: var(--amber);
+}
+
+.client-wordmark {
+  color: var(--text-secondary);
+}
+
+.client-sub {
+  color: var(--text-muted);
+}
+
+.topbar-collab {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.collab-divider-line {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(20deg);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notif-btn {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-btn::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 5px var(--amber);
+}
+
+.avatar-menu {
+  position: relative;
+}
+
+.avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 20px;
+  border: 1px solid var(--border-mid);
+  background: transparent;
+  color: inherit;
+}
+
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-active);
+  background: linear-gradient(135deg, rgba(232, 131, 74, 0.3), rgba(232, 131, 74, 0.1));
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Clash Display', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.avatar-name {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.avatar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 180px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-mid);
+  border-radius: 10px;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.avatar-dropdown a,
+.avatar-dropdown button {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 0;
+  background: transparent;
+}
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 58px;
+  height: calc(100vh - 58px);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+}
+
+.sidebar-item {
+  padding: 10px 20px;
+  border-left: 2px solid transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sidebar-item-active {
+  color: var(--text-primary);
+  border-left-color: var(--amber);
+  background: linear-gradient(90deg, rgba(232, 131, 74, 0.08) 0%, transparent 100%);
+}
+
+.soon-tag {
+  margin-left: auto;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 7px;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 20px;
+}
+
+.streak-card {
+  background: linear-gradient(135deg, rgba(232, 131, 74, 0.12) 0%, rgba(232, 131, 74, 0.04) 100%);
+  border: 1px solid var(--border-active);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.footer {
+  margin-top: auto;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  height: 46px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px;
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-center {
+  justify-content: center;
+}
+
+.footer-right {
+  justify-content: flex-end;
+}
+
+.footer-divider {
+  width: 1px;
+  height: 10px;
+  background: var(--border-mid);
+}
+
+.module-pill {
+  border-radius: 999px;
+  border: 1px solid var(--border-mid);
+  padding: 4px 10px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }
