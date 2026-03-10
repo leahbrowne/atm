@@ -28,7 +28,14 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ClerkProvider>{children}</ClerkProvider>
+        <ClerkProvider
+          signInUrl="/sign-in"
+          signUpUrl="/sign-in"
+          afterSignInUrl="/dashboard"
+          afterSignUpUrl="/profile/complete"
+        >
+          {children}
+        </ClerkProvider>
         <SpeedInsights />
       </body>
     </html>
