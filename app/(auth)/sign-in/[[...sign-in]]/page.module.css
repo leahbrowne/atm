@@ -1,0 +1,372 @@
+.signInPage {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.leftPanel {
+  position: relative;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--border);
+  background: var(--black);
+  overflow: hidden;
+}
+
+.leftPanel::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 131, 74, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.leftPanel::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 131, 74, 0.03) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.panelBrand,
+.panelContent,
+.panelClient {
+  position: relative;
+  z-index: 1;
+}
+
+.panelBrand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brandMark {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-active);
+  border-radius: 6px;
+  background: var(--amber-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandWordmark {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.brandSub {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.panelEyebrow {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panelEyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--amber);
+  opacity: 0.5;
+}
+
+.panelHeadline {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin-bottom: 20px;
+}
+
+.panelDescription {
+  max-width: 380px;
+  margin-bottom: 40px;
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.featureList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.featureDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.clientBadge {
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-mid);
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.clientBadge strong {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.rightPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: var(--surface);
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 380px;
+}
+
+.loginTitle {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+.loginSubtitle {
+  margin-bottom: 32px;
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.socialButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border-mid);
+  background: var(--surface-2);
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.socialLabel {
+  flex: 1;
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.googleButton {
+  cursor: pointer;
+}
+
+.googleButton:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.linkedInButton {
+  position: relative;
+  border-color: rgba(10, 102, 194, 0.26);
+  background: rgba(10, 102, 194, 0.06);
+  cursor: not-allowed;
+  opacity: 0.82;
+}
+
+.recommendedPill {
+  border: 1px solid rgba(232, 131, 74, 0.4);
+  background: rgba(232, 131, 74, 0.12);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber-light);
+}
+
+.divider {
+  margin: 22px 0 20px;
+  position: relative;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 33%;
+  height: 1px;
+  background: var(--border-mid);
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.inputGroup {
+  margin-bottom: 12px;
+}
+
+.inputField {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-mid);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.inputField::placeholder {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: var(--border-active);
+  box-shadow: 0 0 0 3px rgba(232, 131, 74, 0.08);
+}
+
+.submitButton {
+  margin-top: 8px;
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: var(--amber);
+  color: var(--black);
+  padding: 14px 18px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submitButton:hover:enabled {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.forgotPassword {
+  margin-top: 12px;
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.errorMessage {
+  margin-top: 12px;
+  font-family: 'Clash Display', sans-serif;
+  font-size: 12px;
+  color: var(--red);
+}
+
+.footerNote {
+  margin-top: 24px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+@media (max-width: 980px) {
+  .signInPage {
+    grid-template-columns: 1fr;
+    min-height: 100dvh;
+    overflow-y: auto;
+  }
+
+  .leftPanel {
+    padding: 24px;
+    min-height: 260px;
+    gap: 28px;
+  }
+
+  .panelContent,
+  .panelClient {
+    display: none;
+  }
+
+  .rightPanel {
+    padding: 28px 22px 36px;
+  }
+}
