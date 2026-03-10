@@ -13,6 +13,7 @@
   justify-content: space-between;
   border-right: 1px solid var(--border);
   background: var(--black);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   overflow: hidden;
 }
 
@@ -128,7 +129,7 @@
 
 .featureItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -136,12 +137,13 @@
 }
 
 .featureDot {
+  color: var(--amber);
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: var(--amber);
-  opacity: 0.6;
   flex-shrink: 0;
+  margin-top: 6px;
 }
 
 .clientBadge {
