@@ -91,11 +91,10 @@ export default function SignInPage() {
         </div>
 
         <div className={styles.panelContent}>
-          <p className={styles.panelEyebrow}>Member Portal</p>
-          <h1 className={styles.panelHeadline}>The knowledge that keeps you one step ahead</h1>
+          <p className={styles.panelEyebrow}>FOR LEADERS AND TEAMS WHO WANT TO STOP GUESSING AND START GROWING.</p>
+          <h1 className={styles.panelHeadline}>Marketing knowledge that sticks.</h1>
           <p className={styles.panelDescription}>
-            Essential insights and practical frameworks to help your team move faster, make better
-            decisions, and stay ahead in a changing market.
+            Help teams understand marketing and use that understanding to grow the business.
           </p>
 
           <ul className={styles.featureList}>
