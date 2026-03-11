@@ -26,9 +26,9 @@ type Intel = {
 }
 
 const placeholderComingSoon = [
-  { id: '01', title: 'Social Strategy Masterclass' },
-  { id: '02', title: 'Attribution & Measurement' },
-  { id: '03', title: 'Creative Operations' },
+  { id: '01', title: 'Social Strategy Masterclass', track_order: 1 },
+  { id: '02', title: 'Attribution & Measurement', track_order: 2 },
+  { id: '03', title: 'Creative Operations', track_order: 3 },
 ]
 
 function getGreeting() {
